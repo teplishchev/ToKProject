@@ -1,0 +1,79 @@
+﻿@model ProbnikNeSmotret.Models.CourseTeacherViewModel
+
+@{
+    ViewBag.Title = "CourseDetails";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<h2>CourseDetails</h2>
+
+<table class="table" border="1">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Course)</th>
+        <th>@Html.DisplayNameFor(model => model.ParagraphsModwl.First().Paragraph)</th>
+        <th>@Html.DisplayNameFor(model => model.ParagraphsModwl.First().TestsModel.First().Test)</th>
+    </tr>
+
+    @for (int i = 0; i < 1; i++)
+    {
+        int rowsCourse = 0;
+        int k = 0;
+        int j = 0;
+        foreach (var parVM in Model.ParagraphsModwl)
+        {
+            foreach (var testVM in parVM.TestsModel)
+            {
+                rowsCourse++;
+            }
+        }
+        <tr>
+            <td rowspan="@rowsCourse">@Model.Course.Name</td>
+
+            @foreach (var parVM in Model.ParagraphsModwl)
+            {
+                k++;
+                j = 0;
+                if (k == 1)
+                {
+                    <td rowspan="@parVM.TestsModel.Count">@parVM.Paragraph.Name</td>
+                    foreach (var testVM in parVM.TestsModel)
+                    {
+                        j++;
+                        if (j == 1)
+                        {
+                            <td>@testVM.Test.Name</td>
+                            continue;
+                        }
+                    <tr>
+                        <td>@testVM.Test.Name</td>
+                    </tr>
+                }
+                    continue;
+                }
+                <tr>
+                    <td rowspan="@parVM.TestsModel.Count">@parVM.Paragraph.Name</td>
+                    @foreach (var testVM in parVM.TestsModel)
+                    {
+                        j++;
+                        if (j == 1)
+                        {
+                            <td>@testVM.Test.Name</td>
+                            continue;
+                        }
+                    <tr>
+                        <td>@testVM.Test.Name</td>
+                    </tr>
+                }
+                    </tr>
+                }
+
+            </tr>
+        }
+
+    @*<td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td*@>
+
+</table>

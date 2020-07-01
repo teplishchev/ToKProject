@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/" />
+    @*<link rel="stylesheet" href="~/css/Color.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/MyStyle.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />*@
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .hero-image-area {
+            background-image: url(../../Images/area.jpg);
+            height: 500px;
+            background-color: #cccccc;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .hero-image-test {
+            background-image: url(../../Images/test.jpg);
+            height: 500px;
+            background-color: #cccccc;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .hero-image {
+            background-image: url(../../Images/head.jpg);
+            height: 500px;
+            background-color: #cccccc;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .hero-text {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+    </style>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    <div class="navbar fixed-top bg-dark navbar-expand-lg navbar-dark mb-2">
+        <div class="container">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @Html.ActionLink("ToK", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">@Html.ActionLink("Главная", "About", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Курсы", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Контакты", "About", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
+                </ul>
+                @using (Html.BeginForm("Search", "Home", FormMethod.Post,
+                    new { enctype = "multipart/form-data", @class = "form-inline ml-auto mr-auto" }))
+                {
+                    <input class="form-control mr-sm-2" type="search" placeholder="Искать" aria-label="Search" name="searchString">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Поиск</button>
+                }
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container body-content mt-2">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

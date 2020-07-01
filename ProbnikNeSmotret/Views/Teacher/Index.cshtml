@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ProbnikNeSmotret.Models.Course>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.RouteLink("Создать курс", new { controller = "Teacher", action = "CreateCourse" }, new { @class = "btn btn-secondary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortDescription)
+        </th>
+        <th>
+            <p>Добавить</p>
+        </th>
+        <th>
+            <p>Удалить</p>
+        </th>
+        <th>
+            <p>Детали</p>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ShortDescription)
+        </td>
+        <td>
+            @Html.RouteLink("Добавить главу",
+                        new { controller = "Teacher", action = "CreateParagraph", courseId = item.Id }, new { @class = "btn btn-secondary" })
+            @Html.RouteLink("Добавить тест",
+                        new {controller = "Teacher", action = "CreateTest", courseId = item.Id}, new {@class = "btn btn-secondary"})
+            @Html.RouteLink("Вопросы к тестам",
+                        new {controller = "Teacher", action = "ParagraphsList", courseId = item.Id}, new {@class = "btn btn-secondary"})
+            </td>
+        <td>
+            @Html.RouteLink("Удалить курс",
+                        new {controller = "Teacher", action = "DeleteCourse", courseId = item.Id}, new {@class = "btn btn-secondary"})
+            @Html.RouteLink("Удалить главу",
+                        new {controller = "Teacher", action = "ParagraphListOnDelete", courseId = item.Id}, new {@class = "btn btn-secondary"})
+            @Html.RouteLink("Удалить тест",
+                        new {controller = "Teacher", action = "ParagraphListOnDeleteTest", courseId = item.Id}, new {@class = "btn btn-secondary"})
+        </td>
+        <td>
+            @Html.RouteLink("Детали курса",
+                        new {controller = "Teacher", action = "CourseDetails", courseId = item.Id}, new {@class = "btn btn-secondary"})
+        </td>
+    </tr>
+}
+
+</table>

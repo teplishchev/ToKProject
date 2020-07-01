@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ProbnikNeSmotret.Models.Question>
+
+@{
+    ViewBag.Title = "QuestionsList";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<h2>QuestionsList</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Answer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Points)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Answer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Points)
+        </td>
+    </tr>
+}
+</table>
+<div>
+    @Html.ActionLink("К списку курсов", "Index")
+</div>

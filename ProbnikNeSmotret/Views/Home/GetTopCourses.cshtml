@@ -1,0 +1,30 @@
+﻿@model ProbnikNeSmotret.Models.TopCourses
+
+@{
+    ViewBag.Title = "GetTopCourses";
+}
+
+<h2>GetTopCourses</h2>
+
+<div>
+    <h4>TopCourses</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<table>
+    <tr>
+        <th>Курс</th>
+        <th>Количество участников</th>
+    </tr>
+    @foreach(var course in Model.Course)
+    {
+        <tr>
+            <td>@course.Key.Name</td>
+            <td>@course.Value</td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

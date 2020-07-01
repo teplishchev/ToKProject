@@ -1,0 +1,39 @@
+﻿@model ProbnikNeSmotret.Models.PersonalArea
+
+@{
+    ViewBag.Title = "DeleteCourseFromPersonalArea";
+}
+
+<h2>Личный кабинет</h2>
+
+<div>
+    <h4>PersonalArea</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Courses)
+        </dt>
+
+        <dd>
+            @foreach (var course in Model.Courses)
+            {
+                <p>@course.Name</p>
+                @Html.RouteLink("Продолжить обучение",
+                        new { controller = "Home", action = "StudyOnCourse", courseId = course.Id }, new { @class = "btn btn-secondary" })
+                @Html.RouteLink("Отписаться от курса",
+                        new { controller = "Home", action = "DeleteCourseFromPersonalArea", courseId = course.Id }, new { @class = "btn btn-secondary" })
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

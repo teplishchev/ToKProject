@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ProbnikNeSmotret.Models.Test>
+
+@{
+    ViewBag.Title = "ParagraphsList";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<h2>TestsList</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.RouteLink("Добавить вопрос",
+                     new { controller = "Teacher", action = "CreateQuestion", testId = item.Id }, new { @class = "btn btn-secondary" })
+        </td>
+        <td>
+            @Html.RouteLink("Посмотреть вопросы",
+                     new { controller = "Teacher", action = "QuestionsList", testId = item.Id }, new { @class = "btn btn-secondary" })
+        </td>
+    </tr>
+    }
+</table>
+

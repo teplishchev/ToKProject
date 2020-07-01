@@ -1,0 +1,33 @@
+﻿@using ProbnikNeSmotret.Models;
+@model ProbnikNeSmotret.Models.StudyViewModel
+
+@{
+    ViewBag.Title = "StudyOnCourse";
+}
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <div>
+            <h2>@Html.DisplayFor(Model => Model.Paragraph.Name)</h2>
+            <img src="@Url.Content("~/Images/")@Model.Paragraph.ImgUrl" class="smallImg card-img-top" alt="Обложка" />
+
+
+            <h3>@Html.DisplayFor(Model => Model.Paragraph.Description)</h3>
+
+
+            <h5>@Html.DisplayFor(Model => Model.Paragraph.Text)</h5>
+        </div>
+        @foreach (var test in Model.Tests)
+        {
+            @*@Html.RouteLink("Пройти тест",
+               new { controller = "Home", action = "CheckTest", answer = new AnswerViewModel() { TestId = test.Id, NumInTest = 0, IsTheEnd = false, TestPoints = test.Points} }, new { @class = "btn btn-secondary" })
+            }*@
+            @Html.RouteLink("Пройти тест",
+          new { controller = "Home", action = "CheckTest", testId = test.Id, number = 0, isTheEnd = false, testPoints = test.Points, allPoints = 0, text = "", answers = new Dictionary<int,string>()}, new { @class = "btn btn-secondary" })
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

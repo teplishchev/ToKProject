@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ProbnikNeSmotret.Models.Paragraph>
+
+@{
+    ViewBag.Title = "ParagraphListOnDelete";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<h2>ParagraphListOnDelete</h2>
+
+<div>
+    <h4>Paragraph</h4>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.RouteLink("Удалить",
+                             new { controller = "Teacher", action = "DeleteParagraph", paragraphId = item.Id }, new { @class = "btn btn-secondary" })
+                </td>
+            </tr>
+        }
+    </table>
+    </div>

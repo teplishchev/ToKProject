@@ -1,0 +1,58 @@
+﻿@using ProbnikNeSmotret.Models
+@model ProbnikNeSmotret.Models.AnswerViewModel
+
+@{
+    ViewBag.Title = "CheckTest";
+}
+
+<div class="hero-image-test">
+    <div class="hero-text">
+    </div>
+</div>
+
+@if (Model.IsTheEnd == true)
+{
+    <p>Вы прошли тест и набрали @Model.AllPoints очков из @Model.TestPoints</p>
+    <p>Хотите ли вы пройти тест заново?</p>
+    @Html.RouteLink("Да",
+          new { controller = "Home", action = "CheckTest", testId = Model.TestId, number = 0, isTheEnd = false, testPoints = Model.TestPoints, allPoints = 0, text = "q"}, new { @class = "btn btn-secondary" })
+    @Html.RouteLink("Следующая глава",
+          new { controller = "Home", action = "StudyOnCourse", courseId = ViewBag.CourseId}, new { @class = "btn btn-secondary" })
+}
+else
+{
+    <img src="@Url.Content("~/Images/")@Model.Question.ImgUrl" class="smallImg card-img-top" alt="Вопрос" />
+    <p>Вы можете заработать @Model.Question.Points баллов.</p>
+    <p>@Model.Question.Text</p>
+    <form method="post">
+        <div class="form-group">
+            @Html.EditorFor(model => Model.Text, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.NumInTest)
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.TestId)
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.TestPoints)
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.Question)
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="AllPoints" value="@Model.AllPoints" id="AllPoints">
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.IsTheEnd)
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.answers)
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+}
+@*text = InputExtensions.TextBox(null, "answerQ").ToString()}*@
