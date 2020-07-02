@@ -16,9 +16,24 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        .stroke-head {
+            font: 2em Arial, sans-serif;
+            text-shadow: black 2px 2px 0, black -2px -2px 0, black -2px 2px 0, black 2px -2px 0;
+        }
+
         .hero-image-area {
             background-image: url(../../Images/area.jpg);
-            height: 500px;
+            height: 200px;
+            background-color: #cccccc;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .hero-image-motiv {
+            background-image: url(../../Images/headMotiv.jpg);
+            height: 200px;
             background-color: #cccccc;
             background-position: center;
             background-repeat: no-repeat;
@@ -27,8 +42,8 @@
         }
 
         .hero-image-test {
-            background-image: url(../../Images/test.jpg);
-            height: 500px;
+            background-image: url(../../Images/tests.jpg);
+            height: 200px;
             background-color: #cccccc;
             background-position: center;
             background-repeat: no-repeat;
@@ -38,7 +53,7 @@
 
         .hero-image {
             background-image: url(../../Images/head.jpg);
-            height: 500px;
+            height: 300px;
             background-color: #cccccc;
             background-position: center;
             background-repeat: no-repeat;
@@ -84,7 +99,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">@Html.ActionLink("Главная", "About", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Курсы", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Контакты", "About", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Мотивировка", "Contact", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
                 </ul>
                 @using (Html.BeginForm("Search", "Home", FormMethod.Post,
                     new { enctype = "multipart/form-data", @class = "form-inline ml-auto mr-auto" }))

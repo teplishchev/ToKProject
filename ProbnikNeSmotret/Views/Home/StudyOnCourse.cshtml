@@ -5,18 +5,28 @@
     ViewBag.Title = "StudyOnCourse";
 }
 
+<style>
+    .leftimg {
+        float: left; /* Выравнивание по левому краю */
+        margin: 10px 10px 10px 0; /* Отступы вокруг картинки */
+    }
+    .fig {
+        text-align: center; /* Выравнивание по центру */
+    }
+</style>
+
 <div>
     <hr />
     <dl class="dl-horizontal">
         <div>
-            <h2>@Html.DisplayFor(Model => Model.Paragraph.Name)</h2>
-            <img src="@Url.Content("~/Images/")@Model.Paragraph.ImgUrl" class="smallImg card-img-top" alt="Обложка" />
+            <h2 class="fig">@Html.DisplayFor(Model => Model.Paragraph.Name)</h2>
 
 
-            <h3>@Html.DisplayFor(Model => Model.Paragraph.Description)</h3>
+            <h3 class="fig">@Html.DisplayFor(Model => Model.Paragraph.Description)</h3>
 
 
-            <h5>@Html.DisplayFor(Model => Model.Paragraph.Text)</h5>
+            <p align ="justify"><img src="@Url.Content("~/Images/")@Model.Paragraph.ImgUrl" alt="img" width="250" height="250" class="leftimg">
+            @Html.DisplayFor(Model => Model.Paragraph.Text)</p>
         </div>
         @foreach (var test in Model.Tests)
         {
@@ -29,5 +39,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Вернуться в личный кабинет", "ShowArea")
 </p>

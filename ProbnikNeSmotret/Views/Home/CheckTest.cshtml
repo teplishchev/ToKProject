@@ -21,7 +21,7 @@
 }
 else
 {
-    <img src="@Url.Content("~/Images/")@Model.Question.ImgUrl" class="smallImg card-img-top" alt="Вопрос" />
+    //<img src="@Url.Content("~/Images/")@Model.Question.ImgUrl" class="smallImg card-img-top" alt="Вопрос" />
     <p>Вы можете заработать @Model.Question.Points баллов.</p>
     <p>@Model.Question.Text</p>
     <form method="post">
@@ -51,7 +51,7 @@ else
             @Html.HiddenFor(model => Model.answers)
         </div>
         <div class="form-group">
-            <input type="submit" value="Отправить">
+            <input type="submit" value="Ответить">
         </div>
     </form>
 }

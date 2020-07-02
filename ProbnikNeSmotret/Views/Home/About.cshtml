@@ -44,29 +44,32 @@
     А также разместить собственные курсы, чтобы поделиться своими знаниями с другими.
 </h3>
 <h4>Самые популярные курсы по категориям:</h4>
-@foreach (var t in Model)
-{
-    <div class="col-md-auto">
-        <div class="card my-1 border-0" style="width: 14rem;">
-            @*<div class="card-header">
-                    @Html.RouteLink("Отзывы: " + @t.ReviewNumber,
-                        new
-                        {
-                            controller = "Home", action = "ViewBookReviews",
-                            bookId = t.TheCourse.Id
-                        }, new {@class = "btn btn-light btn-sm"})
-                </div>*@
-            <img src="@Url.Content("~/Images/")@t.ImageUrl" class="smallImg card-img-top" alt="Обложка" />
-            <div class="card-body">
-                <h5 class="card-title">@t.Price p.</h5>
-                <h6 class="card-subtitle mb-2 text-muted">@t.Name</h6>
-                <h6 class="card-subtitle mb-2 text-muted">@t.ShortDescription</h6>
-                <p class="card-text">@t.Category.Name </p>
-                @Html.RouteLink("Записаться на курс",
-                    new {controller = "Home", action = "AddCourseToArea", courseId = t.Id}, new {@class = "btn btn-secondary"})
+
+<div class="justify-content-around" style="display: flex; flex-wrap: wrap">
+    @foreach (var t in Model)
+    {
+        <div class="col-md-auto">
+            <div class="card my-1 border-0" style="width: 14rem;">
+                @*<div class="card-header">
+                        @Html.RouteLink("Отзывы: " + @t.ReviewNumber,
+                            new
+                            {
+                                controller = "Home", action = "ViewBookReviews",
+                                bookId = t.TheCourse.Id
+                            }, new {@class = "btn btn-light btn-sm"})
+                    </div>*@
+                <img width="250" height="250" src="@Url.Content("~/Images/")@t.ImageUrl" alt="Обложка" />
+                <div class="card-body">
+                    <h5 class="card-title">@t.Price p.</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@t.Name</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">@t.ShortDescription</h6>
+                    <p class="card-text">@t.Category.Name </p>
+                    @Html.RouteLink("Записаться на курс",
+                        new {controller = "Home", action = "AddCourseToArea", courseId = t.Id}, new {@class = "btn btn-secondary"})
+                </div>
             </div>
         </div>
+    }
     </div>
-}
-<p>По любым вопросам можно обратиться по адресу dteplishev@yandex.ru. Приветствуются любые предложения по улучшению сайта =)</p>
+    <p>По любым вопросам можно обратиться по адресу dteplishev@yandex.ru. Приветствуются любые предложения по улучшению сайта =)</p>
 
