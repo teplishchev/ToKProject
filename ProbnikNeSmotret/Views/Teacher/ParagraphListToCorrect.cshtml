@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ProbnikNeSmotret.Models.Paragraph>
+@{
+    ViewBag.Title = "ParagraphListToCorrect";
+}
+
+<h2>Список глав</h2>
+
+<div>
+    <h4>Главы</h4>
+    @Html.RouteLink("Изменить описание курса",
+                         new { controller = "Teacher", action = "CorrectCourse", courseId = ViewBag.courseId }, new { @class = "btn btn-secondary" })
+    <table class="table">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.RouteLink("Изменить",
+                             new { controller = "Teacher", action = "CorrectParagraph", paragraphId = item.Id }, new { @class = "btn btn-secondary" })
+                </td>
+                <td>
+                    @Html.RouteLink("Список тестов",
+                             new { controller = "Teacher", action = "TestListToCorrect", paragraphId = item.Id }, new { @class = "btn btn-secondary" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+

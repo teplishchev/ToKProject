@@ -1,9 +1,18 @@
-﻿@model ProbnikNeSmotret.Models.PersonalArea
+﻿@using ProbnikNeSmotret.Models
+@model ProbnikNeSmotret.Models.PersonalArea
 
 @{
     ViewBag.Title = "AddCourseToArea";
 }
+<style>
+    .div-1 {
+        background-color: forestgreen;
+    }
 
+    .div-2 {
+        background-color: orangered;
+    }
+</style>
 <h2>AddCourseToArea</h2>
 
 <div>
@@ -24,11 +33,52 @@
         <dd>
             @foreach (var course in Model.Courses)
             {
-                <p>@course.Name</p>
+                <h3>@course.Name</h3>
+                <p></p>
                 @Html.RouteLink("Продолжить обучение",
-                        new { controller = "Home", action = "StudyOnCourse", courseId = course.Id }, new { @class = "btn btn-secondary" })
+                             new { controller = "Home", action = "StudyOnCourse", courseId = course.Id }, new { @class = "btn btn-secondary" })
                 @Html.RouteLink("Отписаться от курса",
-                        new { controller = "Home", action = "DeleteCourseFromPersonalArea", courseId = course.Id }, new { @class = "btn btn-secondary" })
+                             new { controller = "Home", action = "DeleteCourseFromPersonalArea", courseId = course.Id }, new { @class = "btn btn-secondary" })
+                <p></p>
+                var paragraphs = ((CoursesInAreaModel)ViewBag.coursesModel).courses.Where(c => c.Key == course.Id).First();
+                var numGreen = ((List<KeyValuePair<int, int>>)ViewBag.RedGreen).Where(c => c.Key == course.Id).First().Value;
+                var i = 0;
+                <div class="justify-content-around" style="display: flex; flex-wrap: wrap">
+                    @foreach (var paragraph in paragraphs.Value)
+                    {
+                        if (i < numGreen)
+                        {
+                            i++;
+                            <div class="div-1">
+                                <div class="col-md-auto">
+
+                                    <div class="card my-1 border-0" style="width: 14rem;">
+                                        <img width="220" height="220" src="@Url.Content("~/Images/")@paragraph.UrlImg" alt="Обложка" />
+                                        <div class="card-body">
+                                            <h5 class="card-title">@paragraph.Name</h5>
+                                            @Html.RouteLink("Посмотреть",
+                       new { controller = "Home", action = "WatchParagraph", paragraphId = paragraph.ParagraphId }, new { @class = "btn btn-secondary" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="div-2">
+                                <div class="col-md-auto">
+
+                                    <div class="card my-1 border-0" style="width: 14rem;">
+                                        <img width="220" height="220" src="@Url.Content("~/Images/")@paragraph.UrlImg" alt="Обложка" />
+                                        <div class="card-body">
+                                            <h5 class="card-title">@paragraph.Name</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
             }
         </dd>
 
@@ -36,5 +86,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Вернуться в каталог", "Index")
 </p>

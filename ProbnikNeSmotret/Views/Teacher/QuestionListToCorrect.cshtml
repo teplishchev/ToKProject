@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ProbnikNeSmotret.Models.Question>
+@{
+    ViewBag.Title = "QuestionListToCorrect";
+}
+
+<h2>Список вопросов</h2>
+
+<div>
+    <h4>Вопросы</h4>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.RouteLink("Изменить",
+                             new { controller = "Teacher", action = "CorrectQuestion", questionId = item.Id }, new { @class = "btn btn-secondary" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+

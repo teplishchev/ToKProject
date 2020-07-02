@@ -138,10 +138,8 @@ namespace ProbnikNeSmotret.Controllers
             return RedirectToAction("CheckTest", new { testId = answer.TestId, number = answer.NumInTest, isTheEnd = answer.IsTheEnd, testPoints = answer.TestPoints, allPoints = answer.AllPoints, text = answer.Text, answers = answer.answers});
         }
 
-        public ActionResult StudyOnCourse(int courseId)
+        public StudyViewModel GetNextParagraph(PersonalArea area, int courseId)
         {
-            string userId = User.Identity.GetUserId();
-            PersonalArea area = db.PersonalAreas.Where(p => p.AspNetUserId.CompareTo(userId) == 0).First();
             var structure = area.CourseStructures.Where(c => c.IdCourse == courseId).First();
             var parStructures = db.ParagraphStructures.Where(p => p.CourseStructureId == structure.Id);
             List<ParagraphStructure> sortParag = parStructures.OrderBy(p => p.NumInCourse).ToList();
@@ -165,11 +163,19 @@ namespace ProbnikNeSmotret.Controllers
                     {
                         List<Test> tests = db.Tests.Where(t => t.ParagraphId == par.IdParagraph).ToList();
                         StudyViewModel model = new StudyViewModel() { Paragraph = db.Paragraphs.Find(par.IdParagraph), Tests = tests };
-                        return View(model);
+                        return model;
                     }
                 }
             }
-            return View(new StudyViewModel() { Paragraph = db.Paragraphs.Find(sortParag.Last().IdParagraph), Tests = new List<Test>() });
+            return new StudyViewModel() { Paragraph = db.Paragraphs.Find(sortParag.Last().IdParagraph), Tests = new List<Test>()};
+        }
+
+        public ActionResult StudyOnCourse(int courseId)
+        {
+            string userId = User.Identity.GetUserId();
+            PersonalArea area = db.PersonalAreas.Where(p => p.AspNetUserId.CompareTo(userId) == 0).First();
+            StudyViewModel model = GetNextParagraph(area, courseId);
+            return View(model);
         }
 
         public ActionResult DeleteCourseFromPersonalArea(int courseId)
@@ -184,7 +190,36 @@ namespace ProbnikNeSmotret.Controllers
             area.Courses.Remove(db.Courses.Find(courseId));
             db.Entry(area).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
+
+            CoursesInAreaModel coursesModel = MakeCoursesModel(area);
+            ViewBag.coursesModel = coursesModel;
+            List<KeyValuePair<int, int>> redGreen = new List<KeyValuePair<int, int>>();
+            foreach (var course in area.Courses)
+            {
+                StudyViewModel studyModel = GetNextParagraph(area, course.Id);
+                redGreen.Add(new KeyValuePair<int, int>(course.Id, studyModel.Paragraph.NumInCourse));
+            }
+            ViewBag.RedGreen = redGreen;
             return View(area);
+        }
+
+        public CoursesInAreaModel MakeCoursesModel(PersonalArea area)
+        {
+            CoursesInAreaModel coursesModel = new CoursesInAreaModel();
+            Dictionary<int, List<Triplet>> dictionary = new Dictionary<int, List<Triplet>>();
+            foreach (var course in area.Courses)
+            {
+                var paragraphs = db.Paragraphs.Where(p => p.CourseId == course.Id).ToList();
+                var sort = paragraphs.OrderBy(p => p.NumInCourse).ToList();
+                List<Triplet> pars = new List<Triplet>();
+                foreach (var paragraph in sort)
+                {
+                    pars.Add(new Triplet() { Name = paragraph.Name, UrlImg = paragraph.ImgUrl, ParagraphId = paragraph.Id });
+                }
+                dictionary.Add(course.Id, pars);
+            }
+            coursesModel.courses = dictionary;
+            return coursesModel;
         }
 
         public ActionResult ShowArea()
@@ -198,6 +233,15 @@ namespace ProbnikNeSmotret.Controllers
             {
                 string userId = User.Identity.GetUserId();
                 PersonalArea area = db.PersonalAreas.Where(a => a.AspNetUserId.CompareTo(userId) == 0).First();
+                CoursesInAreaModel coursesModel = MakeCoursesModel(area);
+                ViewBag.coursesModel = coursesModel;
+                List<KeyValuePair<int, int>> redGreen = new List<KeyValuePair<int, int>>();
+                foreach(var course in area.Courses)
+                {
+                    StudyViewModel studyModel = GetNextParagraph(area, course.Id);
+                    redGreen.Add(new KeyValuePair<int, int>(course.Id, studyModel.Paragraph.NumInCourse));
+                }
+                ViewBag.RedGreen = redGreen;
                 return View(area);
             }
             return RedirectToAction("Index");
@@ -224,12 +268,27 @@ namespace ProbnikNeSmotret.Controllers
                 area.CourseStructures.Add(courseStr);
                 area.Courses.Add(db.Courses.Find(courseId));
                 db.SaveChanges();
+                CoursesInAreaModel coursesModel = MakeCoursesModel(area);
+                ViewBag.coursesModel = coursesModel;
+                List<KeyValuePair<int, int>> redGreen = new List<KeyValuePair<int, int>>();
+                foreach (var course in area.Courses)
+                {
+                    StudyViewModel studyModel = GetNextParagraph(area, course.Id);
+                    redGreen.Add(new KeyValuePair<int, int>(course.Id, studyModel.Paragraph.NumInCourse));
+                }
+                ViewBag.RedGreen = redGreen;
                 return View(area);
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
+        }
+
+        public ActionResult WatchParagraph(int paragraphId)
+        {
+            var paragraph = db.Paragraphs.Find(paragraphId);
+            return View(paragraph);
         }
 
         public CourseStructure CreateCourseStructure(int courseId)

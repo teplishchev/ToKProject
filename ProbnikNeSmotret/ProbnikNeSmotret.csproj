@@ -253,6 +253,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseContext.cs" />
     <Compile Include="Models\CoursePersonalArea.cs" />
+    <Compile Include="Models\CoursesInAreaModel.cs" />
     <Compile Include="Models\CourseStructure.cs" />
     <Compile Include="Models\CourseTeacherViewModel.cs" />
     <Compile Include="Models\CourseViewModel.cs" />
@@ -455,6 +456,14 @@
     <Content Include="Views\Home\GetTopCourses.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Admin\AddTeacher.cshtml" />
+    <Content Include="Views\Teacher\ParagraphListToCorrect.cshtml" />
+    <Content Include="Views\Teacher\TestListToCorrect.cshtml" />
+    <Content Include="Views\Teacher\CorrectParagraph.cshtml" />
+    <Content Include="Views\Teacher\CorrectTest.cshtml" />
+    <Content Include="Views\Teacher\QuestionListToCorrect.cshtml" />
+    <Content Include="Views\Teacher\CorrectQuestion.cshtml" />
+    <Content Include="Views\Teacher\CorrectCourse.cshtml" />
+    <Content Include="Views\Home\WatchParagraph.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -83,6 +83,10 @@ namespace ProbnikNeSmotret.Models
         [Display(Name = "Пароль еще раз")]
         [Compare("Password", ErrorMessage = "Пароль и его подтверждение не совпадают.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Преподаватель?")]
+        public bool IsTeacher { get; set; }
     }
 
     public class ResetPasswordViewModel

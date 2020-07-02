@@ -1,20 +1,21 @@
 ﻿@model ProbnikNeSmotret.Models.Course
 
 @{
-    ViewBag.Title = "CreateCourse";
-    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+    ViewBag.Title = "CorrectCourse";
 }
 
-<h2>Создать курс</h2>
+<h2>Изменить курс</h2>
 
-@using (Html.BeginForm("CreateCourse", "Teacher", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("CorrectCourse", "Teacher", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Course</h4>
+    <h4>Курс</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
     <div class="form-group">
         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -63,7 +64,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Сохранить" class="btn btn-default" />
         </div>
     </div>
 </div>

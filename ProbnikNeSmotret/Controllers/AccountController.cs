@@ -164,7 +164,14 @@ namespace ProbnikNeSmotret.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    userManager.AddToRole(user.Id, "user");
+                    if (model.IsTeacher)
+                    {
+                        userManager.AddToRole(user.Id, "teacher");
+                    }
+                    else
+                    {
+                        userManager.AddToRole(user.Id, "user");
+                    }
                     CourseContext db = new CourseContext();
                     PersonalArea area = new PersonalArea();
                     area.Person = user.UserName;
@@ -179,42 +186,6 @@ namespace ProbnikNeSmotret.Controllers
                     // отправка письма
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
                     return View("DisplayEmail");
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RegisterTeacher(RegisterViewModel model)
-        {
-            ApplicationDbContext context = new ApplicationDbContext();
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    userManager.AddToRole(user.Id, "teacher");
-                    CourseContext db = new CourseContext();
-                    PersonalArea area = new PersonalArea();
-                    area.Person = user.UserName;
-                    var userN = context.Users.Where(u => u.Email == user.Email && u.UserName == user.UserName).First();
-                    area.AspNetUserId = userN.Id;
-                    db.PersonalAreas.Add(area);
-                    db.SaveChanges();
-                    // генерируем токен для подтверждения регистрации
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // создаем ссылку для подтверждения
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // отправка письма
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    return RedirectToAction("Index", "Admin");
                 }
                 AddErrors(result);
             }

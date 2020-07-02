@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using ProbnikNeSmotret.Models;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Data.Entity;
 
 namespace ProbnikNeSmotret.Controllers
 {
@@ -16,7 +17,7 @@ namespace ProbnikNeSmotret.Controllers
         // GET: Teacher
         CourseContext db = new CourseContext();
 
-        private const int Height = 200, Width = 150;
+        private const int Height = 400, Width = 250;
 
         // GET: Admin
         [HttpGet]
@@ -27,11 +28,141 @@ namespace ProbnikNeSmotret.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateParagraph()
+        public ActionResult TestListToCorrect(int paragraphId)
         {
-            var courseList = db.Courses.ToList();
+            var tests = db.Tests.Where(t => t.ParagraphId == paragraphId);
+            return View(tests);
+        }
+
+        [HttpGet]
+        public ActionResult CorrectTest(int testId)
+        {
+            var test = db.Tests.Find(testId);
+            return View(test);
+        }
+
+        [HttpGet]
+        public ActionResult QuestionListToCorrect(int testId)
+        {
+            var questions = db.Questions.Where(q => q.TestId == testId);
+            return View(questions);
+        }
+
+        [HttpGet]
+        public ActionResult CorrectQuestion(int questionId)
+        {
+            var question = db.Questions.Find(questionId);
+            return View(question);
+        }
+
+        [HttpPost]
+        public ActionResult CorrectQuestion(Question question, HttpPostedFileBase upload)
+        {
+            if (upload != null)
+            {
+                string fileName = System.IO.Path.GetFileName(upload.FileName);
+                if (CheckByGraphicsFormat(fileName))
+                {
+                    SaveImage(upload, fileName);
+                    question.ImgUrl = fileName;
+                }
+            }
+            if (!ModelState.IsValid) return View(question);
+            db.Entry(question).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult CorrectTest(Test test)
+        {
+            if (!ModelState.IsValid) return View(test);
+            db.Entry(test).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult CorrectParagraph(int paragraphId)
+        {
+            var paragraph = db.Paragraphs.Find(paragraphId);
+            return View(paragraph);
+        }
+
+        [HttpPost]
+        public ActionResult CorrectParagraph(Paragraph par, HttpPostedFileBase upload)
+        {
+            if (upload != null)
+            {
+                string fileName = System.IO.Path.GetFileName(upload.FileName);
+                if (CheckByGraphicsFormat(fileName))
+                {
+                    SaveImage(upload, fileName);
+                    par.ImgUrl = fileName;
+                }
+            }
+            if (!ModelState.IsValid) return View(par);
+            db.Entry(par).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult ParagraphListToCorrect(int courseId)
+        {
+            ViewBag.courseId = courseId;
+            var paragraphs = db.Paragraphs.Where(p => p.CourseId == courseId);
+            return View(paragraphs);
+        }
+
+        [HttpGet]
+        public ActionResult CorrectCourse(int courseId)
+        {
+            var categoriesList = db.Categories.Where(c => c.Id > 0).ToList();
+            //List<Category> list = new List<Category>() { categoriesList };
+            SelectList categories = new SelectList(categoriesList, "Id", "Name");
+            ViewBag.categories = categories;
+            var course = db.Courses.Find(courseId);
+            return View(course);
+        }
+
+        [HttpPost]
+        public ActionResult CorrectCourse(Course course, HttpPostedFileBase upload)
+        {
+            var categoriesList = db.Categories.Where(c => c.Id > 0).ToList();
+            //List<Category> list = new List<Category>() { categoriesList };
+            SelectList categories = new SelectList(categoriesList, "Id", "Name");
+            ViewBag.categories = categories;
+            if (upload != null)
+            {
+                string fileName = System.IO.Path.GetFileName(upload.FileName);
+                if (CheckByGraphicsFormat(fileName))
+                {
+                    SaveImage(upload, fileName);
+                    course.ImageUrl = fileName;
+                }
+            }
+            if (!ModelState.IsValid) return View(course);
+            db.Entry(course).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult CreateParagraph(int courseId)
+        {
+            var course = db.Courses.Find(courseId);
+            var paragraphs = db.Paragraphs.Where(p => p.CourseId == courseId).ToList();
+            int maxParagraph = 0;
+            foreach(var par in paragraphs)
+            {
+                int num = par.NumInCourse;
+                if (maxParagraph < num) maxParagraph = num;
+            }
+            List<Course> courseList = new List<Course>() { course };
             SelectList courses = new SelectList(courseList, "Id", "Name");
             ViewBag.list = courses;
+            ViewBag.numberOfParagraph = maxParagraph + 1;
             return View();
         }
 
@@ -202,9 +333,10 @@ namespace ProbnikNeSmotret.Controllers
         [HttpGet]
         public ActionResult CreateCourse()
         {
-            var categoriesList = db.Categories.ToList();
+            var categoriesList = db.Categories.Where(c => c.Id > 0).ToList();
+            //List<Category> list = new List<Category>() { categoriesList };
             SelectList categories = new SelectList(categoriesList, "Id", "Name");
-            ViewBag.list = categories;
+            ViewBag.categories = categories;
             return View();
         }
 
@@ -212,6 +344,10 @@ namespace ProbnikNeSmotret.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCourse(Course course, HttpPostedFileBase upload)
         {
+            var categoriesList = db.Categories.Where(c => c.Id > 0).ToList();
+            //List<Category> list = new List<Category>() { categoriesList };
+            SelectList categories = new SelectList(categoriesList, "Id", "Name");
+            ViewBag.categories = categories;
             if (upload != null)
             {
                 string fileName = System.IO.Path.GetFileName(upload.FileName);

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Кафедра</h2>
 
 <p>
     @Html.RouteLink("Создать курс", new { controller = "Teacher", action = "CreateCourse" }, new { @class = "btn btn-secondary" })
@@ -69,6 +69,9 @@
         <td>
             @Html.RouteLink("Детали курса",
                         new {controller = "Teacher", action = "CourseDetails", courseId = item.Id}, new {@class = "btn btn-secondary"})
+            @Html.RouteLink("Внести изменения",
+                       new {controller = "Teacher", action = "ParagraphListToCorrect", courseId = item.Id}, new {@class = "btn btn-secondary"})
+
         </td>
     </tr>
 }
