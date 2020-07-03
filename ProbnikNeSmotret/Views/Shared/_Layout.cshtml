@@ -99,7 +99,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">@Html.ActionLink("Главная", "About", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Курсы", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Мотивировка", "Contact", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Что изучать?", "Contact", "Home", null, htmlAttributes: new { @class = "nav-link" })</li>
                 </ul>
                 @using (Html.BeginForm("Search", "Home", FormMethod.Post,
                     new { enctype = "multipart/form-data", @class = "form-inline ml-auto mr-auto" }))
@@ -117,7 +117,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Treasury of Knowledge</p>
         </footer>
     </div>
 

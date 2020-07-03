@@ -20,75 +20,93 @@
         <h1 style="font-size:50px">Личный кабинет</h1>
     </div>
 </div>
-<h2>Личный кабинет</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Person)
-        </dt>
+@if (ViewBag.teacher)
+{
+    <dt>
+        <h3>Ваш email</h3>
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Person)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Courses)
-        </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Person)
+    </dd>
+    <p></p>
+    <p>Приветствуем вас! В данный момент, личный кабинет для преподавателей находится в разработке. Предлагаем перейти Вам на кафедру. Просим прощение за неудобства!</p>
+    @Html.RouteLink("Каферда",
+    new { controller = "Teacher", action = "Index"}, new { @class = "btn btn-secondary" })
 
-        <dd>
-            @foreach (var course in Model.Courses)
-            {
-                <h3>@course.Name</h3>
-                <p></p>
-                @Html.RouteLink("Продолжить обучение",
-                             new { controller = "Home", action = "StudyOnCourse", courseId = course.Id }, new { @class = "btn btn-secondary" })
-                @Html.RouteLink("Отписаться от курса",
-                             new { controller = "Home", action = "DeleteCourseFromPersonalArea", courseId = course.Id }, new { @class = "btn btn-secondary" })
-                <p></p>
-                var paragraphs = ((CoursesInAreaModel)ViewBag.coursesModel).courses.Where(c => c.Key == course.Id).First();
-                var numGreen = ((List<KeyValuePair<int, int>>)ViewBag.RedGreen).Where(c => c.Key == course.Id).First().Value;
-                var i = 0;
-                <div class="justify-content-around" style="display: flex; flex-wrap: wrap">
-                    @foreach (var paragraph in paragraphs.Value)
-                    {
-                        if (i < numGreen)
+}
+else
+{
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                <h3>Ваш email</h3>
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Person)
+            </dd>
+            <dt>
+                <h3>Курсы</h3>
+            </dt>
+
+            <dd>
+                @foreach (var course in Model.Courses)
+                {
+                    <h4>@course.Name</h4>
+                    <p></p>
+                    @Html.RouteLink("Пройти тесты",
+                              new { controller = "Home", action = "StudyOnCourse", courseId = course.Id }, new { @class = "btn btn-secondary" })
+                    @Html.RouteLink("Отписаться от курса",
+                              new { controller = "Home", action = "DeleteCourseFromPersonalArea", courseId = course.Id }, new { @class = "btn btn-secondary" })
+                    <p></p>
+                    var paragraphs = ((CoursesInAreaModel)ViewBag.coursesModel).courses.Where(c => c.Key == course.Id).First();
+                    var numGreen = ((List<KeyValuePair<int, int>>)ViewBag.RedGreen).Where(c => c.Key == course.Id).First().Value;
+                    var i = 0;
+                    <div class="justify-content-around" style="display: flex; flex-wrap: wrap">
+                        @foreach (var paragraph in paragraphs.Value)
                         {
-                            i++;
-                            <div class="div-1">
-                                <div class="col-md-auto">
+                            if (i < numGreen)
+                            {
+                                i++;
+                                <div class="div-1">
+                                    <div class="col-md-auto">
 
-                                    <div class="card my-1 border-0" style="width: 14rem;">
-                                        <img width="220" height="220" src="@Url.Content("~/Images/")@paragraph.UrlImg" alt="Обложка" />
-                                        <div class="card-body">
-                                            <h5 class="card-title">@paragraph.Name</h5>
-                                            @Html.RouteLink("Посмотреть",
-                       new { controller = "Home", action = "WatchParagraph", paragraphId = paragraph.ParagraphId }, new { @class = "btn btn-secondary" })
+                                        <div class="card my-1 border-0" style="width: 14rem;">
+                                            <img width="220" height="220" src="@Url.Content("~/Images/")@paragraph.UrlImg" alt="Обложка" />
+                                            <div class="card-body">
+                                                <h5 class="card-title">@paragraph.Name</h5>
+                                                @Html.RouteLink("Посмотреть",
+    new { controller = "Home", action = "WatchParagraph", paragraphId = paragraph.ParagraphId }, new { @class = "btn btn-secondary" })
+                                                <br />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="div-2">
-                                <div class="col-md-auto">
+                            }
+                            else
+                            {
+                                <div class="div-2">
+                                    <div class="col-md-auto">
 
-                                    <div class="card my-1 border-0" style="width: 14rem;">
-                                        <img width="220" height="220" src="@Url.Content("~/Images/")@paragraph.UrlImg" alt="Обложка" />
-                                        <div class="card-body">
-                                            <h5 class="card-title">@paragraph.Name</h5>
+                                        <div class="card my-1 border-0" style="width: 14rem;">
+                                            <img width="220" height="220" src="@Url.Content("~/Images/")@paragraph.UrlImg" alt="Обложка" />
+                                            <div class="card-body">
+                                                <h5 class="card-title">@paragraph.Name</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
-                    }
-                </div>
-            }
-        </dd>
-    </dl>
-</div>
+                    </div>
+                }
+            </dd>
+        </dl>
+    </div>
+}
 <p>
     @Html.ActionLink("Вернуться в каталог", "Index")
 </p>

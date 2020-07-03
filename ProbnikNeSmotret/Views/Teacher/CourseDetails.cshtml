@@ -5,15 +5,17 @@
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 
-<h2>CourseDetails</h2>
+<br/>
+<h2>Детали курса</h2>
+<br/>
 
-<table class="table" border="1">
+<table class="table" border="1" bordercolor ="black">
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Course)</th>
-        <th>@Html.DisplayNameFor(model => model.ParagraphsModwl.First().Paragraph)</th>
-        <th>@Html.DisplayNameFor(model => model.ParagraphsModwl.First().TestsModel.First().Test)</th>
+        <th>Курс</th>
+        <th>Главы</th>
+        <th>Тесты</th>
     </tr>
-
+ 
     @for (int i = 0; i < 1; i++)
     {
         int rowsCourse = 0;
@@ -21,6 +23,10 @@
         int j = 0;
         foreach (var parVM in Model.ParagraphsModwl)
         {
+            if(parVM.TestsModel.Count == 0)
+            {
+                parVM.TestsModel.Add(new ProbnikNeSmotret.Models.TestTeacherViewModel() { Test = new ProbnikNeSmotret.Models.Test() { Name = "Пока нет теста" } });
+            }
             foreach (var testVM in parVM.TestsModel)
             {
                 rowsCourse++;
@@ -63,17 +69,16 @@
                     <tr>
                         <td>@testVM.Test.Name</td>
                     </tr>
-                }
+                    }
                     </tr>
                 }
 
             </tr>
         }
-
     @*<td>
             @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td*@>
+        </td*@
 
 </table>

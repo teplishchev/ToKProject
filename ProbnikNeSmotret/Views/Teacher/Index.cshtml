@@ -4,9 +4,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
-
+<p></p>
 <h2>Кафедра</h2>
-
+<p>
+    @Html.RouteLink("Создать категорию", new { controller = "Teacher", action = "CreateCategory" }, new { @class = "btn btn-secondary" })
+</p>
 <p>
     @Html.RouteLink("Создать курс", new { controller = "Teacher", action = "CreateCourse" }, new { @class = "btn btn-secondary" })
 </p>

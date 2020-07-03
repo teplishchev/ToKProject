@@ -11,13 +11,12 @@
                     Привет @User.Identity.GetUserName()!
                 </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink3">
-                    <a class="dropdown-item">@Html.ActionLink("Пароль и все такое", "Index", "Manage", null, new { @class = "nav-link" })</a>
                     <a class="dropdown-item"> @Html.ActionLink("Личный кабинет", "ShowArea", "Home", new { id = User.Identity.GetUserId() }, new { @class = "nav-link" })</a>
-                    <a class="dropdown-item">
+                    @*<a class="dropdown-item">
                         @Html.ActionLink("Оставить отзыв", "Comments",
                                  "Client", new {id = User.Identity.GetUserId()},
                                  new {@class = "nav-link"})
-                    </a>
+                    </a>*@
                 </div>
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()"><span class="nav-link">Выход</span></a></li>

@@ -80,7 +80,7 @@ namespace ProbnikNeSmotret.Controllers
                 answer.Question = question1;
                 answers.Add(number, text);
                 answer.answers = answers;
-                if (answer.Question.Answer.CompareTo(answer.Text) == 0)
+                if (answer.Question.Answer.ToLower().CompareTo(answer.Text.ToLower()) == 0)
                 {
                     int point = answer.AllPoints + answer.Question.Points;
                     answer.AllPoints = point;
@@ -231,6 +231,13 @@ namespace ProbnikNeSmotret.Controllers
             //return RedirectToAction("Index");
             if (User.Identity.IsAuthenticated)
             {
+                ViewBag.teacher = false;
+                if (User.IsInRole("teacher"))
+                {
+                    PersonalArea areaTeacher = new PersonalArea() {AspNetUserId = User.Identity.GetUserId(), Person = User.Identity.Name };
+                    ViewBag.teacher = true;
+                    return View(areaTeacher);
+                }
                 string userId = User.Identity.GetUserId();
                 PersonalArea area = db.PersonalAreas.Where(a => a.AspNetUserId.CompareTo(userId) == 0).First();
                 CoursesInAreaModel coursesModel = MakeCoursesModel(area);
@@ -253,6 +260,13 @@ namespace ProbnikNeSmotret.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                ViewBag.teacher = false;
+                if (User.IsInRole("teacher"))
+                {
+                    PersonalArea areaTeacher = new PersonalArea() { AspNetUserId = User.Identity.GetUserId(), Person = User.Identity.Name };
+                    ViewBag.teacher = true;
+                    return View(areaTeacher);
+                }
                 string userId = User.Identity.GetUserId();
                 PersonalArea area = db.PersonalAreas.Where(a => a.AspNetUserId.CompareTo(userId) == 0).First();
                 bool alreadyStudy = false;
@@ -263,7 +277,19 @@ namespace ProbnikNeSmotret.Controllers
                         alreadyStudy = true;
                     }
                 }
-                if (alreadyStudy) return View(area);
+                if (alreadyStudy)
+                {
+                    CoursesInAreaModel coursesModel1 = MakeCoursesModel(area);
+                    ViewBag.coursesModel = coursesModel1;
+                    List<KeyValuePair<int, int>> redGreen1 = new List<KeyValuePair<int, int>>();
+                    foreach (var course in area.Courses)
+                    {
+                        StudyViewModel studyModel = GetNextParagraph(area, course.Id);
+                        redGreen1.Add(new KeyValuePair<int, int>(course.Id, studyModel.Paragraph.NumInCourse));
+                    }
+                    ViewBag.RedGreen = redGreen1;
+                    return View(area);
+                }
                 CourseStructure courseStr = CreateCourseStructure(courseId);
                 area.CourseStructures.Add(courseStr);
                 area.Courses.Add(db.Courses.Find(courseId));
@@ -333,7 +359,15 @@ namespace ProbnikNeSmotret.Controllers
             categoriesList.Insert(0, new Category() { Id = 0, Name = "все" });
             SelectList categories = new SelectList(categoriesList, "Id", "Name");
             ViewBag.Genres = categories;
+            string role = "none";
+            if (User.Identity.IsAuthenticated)
+            {
 
+                if (User.IsInRole("teacher")) role = "teacher";
+                if (User.IsInRole("user")) role = "user";
+                if (User.IsInRole("admin")) role = "admin";
+            }
+            ViewBag.Role = role;
             var courses = db.Courses.Include(b => b.Category).OrderBy(b => b.Name);
             if (!(categoryId == null || categoryId == 0))
             {
@@ -401,6 +435,15 @@ namespace ProbnikNeSmotret.Controllers
 
         public ActionResult About()
         {
+            string role = "none";
+            if (User.Identity.IsAuthenticated)
+            {
+
+                if (User.IsInRole("teacher")) role = "teacher";
+                if (User.IsInRole("user")) role = "user";
+                if (User.IsInRole("admin")) role = "admin";
+            }
+            ViewBag.Role = role;
             List<KeyValuePair<Course, int>> sort = TopCourse();
             List<Course> courses = new List<Course>();
             foreach(var category in db.Categories)

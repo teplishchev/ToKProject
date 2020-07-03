@@ -13,27 +13,25 @@
         background-color: orangered;
     }
 </style>
-<h2>Личный кабинет</h2>
 
 <div>
-    <h4>PersonalArea</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Person)
+            <h3>Ваш email</h3>
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Person)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Courses)
+            <h3>Курсы</h3>
         </dt>
 
         <dd>
             @foreach (var course in Model.Courses)
             {
-                <h3>@course.Name</h3>
+                <h4>@course.Name</h4>
                 <p></p>
                 @Html.RouteLink("Продолжить обучение",
                              new { controller = "Home", action = "StudyOnCourse", courseId = course.Id }, new { @class = "btn btn-secondary" })

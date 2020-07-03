@@ -3,18 +3,49 @@
 @{
     ViewBag.Title = "WatchParagraph";
 }
+<style>
+    .leftimg {
+        float: left; /* Выравнивание по левому краю */
+        margin: 10px 10px 10px 0; /* Отступы вокруг картинки */
+    }
 
-<div>
-    <div>
-        <h2>@Html.DisplayFor(Model => Model.Name)</h2>
-        <p></p>
-        <img src="@Url.Content("~/Images/")@Model.ImgUrl" class="smallImg card-img-top" alt="Обложка" />
-        <p></p>
-        <h3>@Html.DisplayFor(Model => Model.Description)</h3>
-        <p></p>
-        <p></p>
-        <h5>@Html.DisplayFor(Model => Model.Text)</h5>
-    </div>
+    .fig {
+        text-align: center; /* Выравнивание по центру */
+    }
+    .col {
+        width: 830px; /* Ширина блока */
+        padding: 10px; /* Поля */
+        font-size: 1.5em; /* Размер шрифта */
+        word-wrap: break-word; /* Перенос слов */
+    }
+</style>
+
+<<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <div>
+            <h2 class="fig">@Html.DisplayFor(Model => Model.Name)</h2>
+
+
+            <h3 class="fig">@Html.DisplayFor(Model => Model.Description)</h3>
+
+            <div>
+            <p align="justify">
+                <img src="@Url.Content("~/Images/")@Model.ImgUrl" alt="img" width="250" height="250" class="leftimg">
+                @for (int i = 0; i < 1; i++)
+                {
+                    string[] sep = new string[] { "\r\n" };
+                    List<string> textParts = Model.Text.Split(sep, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    foreach (var str in textParts)
+                    {
+                <div>
+                    <p align ="justify">@str</p>
+                </div>
+                    }
+                }
+            </div>
+       
+    </dl>
 </div>
 <p>
     @Html.ActionLink("Вернуться в личный кабинет", "ShowArea")

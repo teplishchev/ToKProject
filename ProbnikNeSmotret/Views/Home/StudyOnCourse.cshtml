@@ -24,19 +24,30 @@
 
             <h3 class="fig">@Html.DisplayFor(Model => Model.Paragraph.Description)</h3>
 
-
-            <p align ="justify"><img src="@Url.Content("~/Images/")@Model.Paragraph.ImgUrl" alt="img" width="250" height="250" class="leftimg">
-            @Html.DisplayFor(Model => Model.Paragraph.Text)</p>
-        </div>
-        @foreach (var test in Model.Tests)
-        {
-            @*@Html.RouteLink("Пройти тест",
-               new { controller = "Home", action = "CheckTest", answer = new AnswerViewModel() { TestId = test.Id, NumInTest = 0, IsTheEnd = false, TestPoints = test.Points} }, new { @class = "btn btn-secondary" })
-            }*@
-            @Html.RouteLink("Пройти тест",
-          new { controller = "Home", action = "CheckTest", testId = test.Id, number = 0, isTheEnd = false, testPoints = test.Points, allPoints = 0, text = "", answers = new Dictionary<int,string>()}, new { @class = "btn btn-secondary" })
-        }
-    </dl>
+            <div>
+                <p align="justify">
+                    <img src="@Url.Content("~/Images/")@Model.Paragraph.ImgUrl" alt="img" width="400" height="250" class="leftimg">
+                    @for (int i = 0; i < 1; i++)
+                    {
+                        string[] sep = new string[] { "\r\n" };
+                        List<string> textParts = Model.Paragraph.Text.Split(sep, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        foreach (var str in textParts)
+                        {
+                            <div>
+                        <p align="justify">@str</p>
+                    </div>
+                }
+            }
+                </div>
+                @foreach (var test in Model.Tests)
+                {
+                    @*@Html.RouteLink("Пройти тест",
+                       new { controller = "Home", action = "CheckTest", answer = new AnswerViewModel() { TestId = test.Id, NumInTest = 0, IsTheEnd = false, TestPoints = test.Points} }, new { @class = "btn btn-secondary" })
+                    }*@
+                    @Html.RouteLink("Пройти тест",
+                  new { controller = "Home", action = "CheckTest", testId = test.Id, number = 0, isTheEnd = false, testPoints = test.Points, allPoints = 0, text = "", answers = new Dictionary<int,string>()}, new { @class = "btn btn-secondary" })
+                }
+            </dl>
 </div>
 <p>
     @Html.ActionLink("Вернуться в личный кабинет", "ShowArea")

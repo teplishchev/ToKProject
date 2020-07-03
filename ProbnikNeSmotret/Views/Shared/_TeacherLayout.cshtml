@@ -15,11 +15,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             @Html.ActionLink("ToK", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-
-            <div class="navbar-collapse collapse" id="navbarSupportedContent">
-
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">@Html.ActionLink("Кафедра", "Index", "Teacher", null, new { @class = "nav-link" })</li>
+                </ul>
                 @Html.Partial("_LoginPartial")
-
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My BookShop</p>
+            <p>&copy; @DateTime.Now.Year - Treasury of Knowledge</p>
         </footer>
     </div>
 

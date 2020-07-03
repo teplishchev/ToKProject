@@ -82,9 +82,9 @@ namespace ProbnikNeSmotret.Controllers
                     {
                         return RedirectToActionPermanent("Index", "Admin");
                     }
-                    if (UserManager.IsInRole(user.Id, "manager"))
+                    if (UserManager.IsInRole(user.Id, "teacher"))
                     {
-                        return RedirectToActionPermanent("Index", "Book");
+                        return RedirectToActionPermanent("Index", "Teacher");
                     }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
@@ -180,12 +180,32 @@ namespace ProbnikNeSmotret.Controllers
                     db.PersonalAreas.Add(area);
                     db.SaveChanges();
                     // генерируем токен для подтверждения регистрации
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // создаем ссылку для подтверждения
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // отправка письма
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    return View("DisplayEmail");
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var result1 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
+                    switch (result1)
+                    {
+                        case SignInStatus.Success:
+                            ApplicationUser user1 = UserManager.FindByEmail(model.Email);
+                            if (UserManager.IsInRole(user.Id, "admin"))
+                            {
+                                return RedirectToActionPermanent("Index", "Admin");
+                            }
+                            if (UserManager.IsInRole(user.Id, "teacher"))
+                            {
+                                return RedirectToActionPermanent("Index", "Teacher");
+                            }
+                            return RedirectToLocal(model.Email);
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                    }
                 }
                 AddErrors(result);
             }

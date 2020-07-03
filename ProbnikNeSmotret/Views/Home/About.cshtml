@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<ProbnikNeSmotret.Models.Course>
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "About";
+    ViewBag.Title = "About";
 }
 
 <br />
@@ -12,13 +12,13 @@
             <div id="carouselControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="@Url.Content("~/Images/courusel1.jpg")" class="d-block w-100" alt="cup">
+                        <img width="850" height="350" src="@Url.Content("~/Images/courusel1.jpg")" class="d-block w-100" alt="cup">
                     </div>
                     <div class="carousel-item">
-                        <img src="@Url.Content("~/Images/courusel2.jpg")" class="d-block w-100" alt="...">
+                        <img width="850" height="350" src="@Url.Content("~/Images/courusel2.jpg")" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="@Url.Content("~/Images/courusel4.jpg")" class="d-block w-100" alt="...">
+                        <img width="850" height="350" src="@Url.Content("~/Images/courusel4.jpg")" class="d-block w-100" alt="...">
                     </div>
 
                 </div>
@@ -38,6 +38,21 @@
 </div>
 
 <br />
+
+@if (ViewBag.Role == "teacher")
+{
+    <p></p>
+    @Html.RouteLink("Кафедра",
+                       new {controller = "Teacher", action = "Index"}, new {@class = "btn btn-secondary"})
+    <p></p>
+}
+@if (ViewBag.Role == "admin")
+{
+    <p></p>
+    @Html.RouteLink("Список пользователей",
+                       new {controller = "Admin", action = "Index"}, new {@class = "btn btn-secondary"})
+    <p></p>
+}
 
 <h3>
     На нашем сайте вы сможете бесплатно получить знания в разных областях.
@@ -70,6 +85,6 @@
             </div>
         </div>
     }
-    </div>
-    <p>По любым вопросам можно обратиться по адресу dteplishev@yandex.ru. Приветствуются любые предложения по улучшению сайта =)</p>
+</div>
+<p>По любым вопросам можно обратиться по адресу dteplishev@yandex.ru. Приветствуются любые предложения по улучшению сайта =)</p>
 
